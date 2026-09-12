@@ -50,8 +50,13 @@ describe('planReconciliation', () => {
   });
 
   test('plans an automatic reattach when a replug detached the phone', () => {
+    // No device is reachable yet, which is the state in which usbipd still matters.
     const plan = planReconciliation(
-      healthy({ usbipd: { available: true, phone: { BusId: '2-2' }, attached: false } }),
+      healthy({
+        usbipd: { available: true, phone: { BusId: '2-2' }, attached: false },
+        devices: [],
+        selectedSerial: null,
+      }),
       desired
     );
     const attach = plan.find((action) => action.kind === 'usbipd-attach');
@@ -62,7 +67,11 @@ describe('planReconciliation', () => {
 
   test('asks the human to install usbipd when it is not reachable', () => {
     const plan = planReconciliation(
-      healthy({ usbipd: { available: false, phone: null, attached: false } }),
+      healthy({
+        usbipd: { available: false, phone: null, attached: false },
+        devices: [],
+        selectedSerial: null,
+      }),
       desired
     );
     const attach = plan.find((action) => action.kind === 'usbipd-attach');
@@ -72,10 +81,49 @@ describe('planReconciliation', () => {
 
   test('asks the human to plug a phone in when none is shared', () => {
     const plan = planReconciliation(
-      healthy({ usbipd: { available: true, phone: null, attached: false } }),
+      healthy({
+        usbipd: { available: true, phone: null, attached: false },
+        devices: [],
+        selectedSerial: null,
+      }),
       desired
     );
     expect(plan.find((a) => a.kind === 'usbipd-attach')?.manualHint).toContain('data-capable');
+  });
+
+  test('stays quiet about usbipd when a usable phone is already reachable', () => {
+    // Found by running doctor against a real project: the phone was present and answering
+    // through the Windows adb server, while usbipd.exe was not on PATH in that shell.
+    // usbipd is a means to an end; complaining once the end is reached is noise.
+    const plan = planReconciliation(
+      healthy({ usbipd: { available: false, phone: null, attached: false } }),
+      desired
+    );
+    expect(plan.map((action) => action.kind)).not.toContain('usbipd-attach');
+  });
+
+  test('still reports usbipd when no device is reachable at all', () => {
+    const plan = planReconciliation(
+      healthy({
+        usbipd: { available: false, phone: null, attached: false },
+        devices: [],
+        selectedSerial: null,
+      }),
+      desired
+    );
+    expect(plan.map((action) => action.kind)).toContain('usbipd-attach');
+  });
+
+  test('still reports usbipd when the only thing reachable is an emulator', () => {
+    const plan = planReconciliation(
+      healthy({
+        usbipd: { available: true, phone: { BusId: '2-2' }, attached: false },
+        devices: [{ serial: 'emulator-5554', state: 'device', isEmulator: true }],
+        selectedSerial: 'emulator-5554',
+      }),
+      desired
+    );
+    expect(plan.map((action) => action.kind)).toContain('usbipd-attach');
   });
 
   test('skips the whole usbipd branch for the emulator target', () => {
@@ -169,6 +217,8 @@ describe('planReconciliation', () => {
         usbipd: { available: true, phone: { BusId: '2-2' }, attached: false },
         adbServerReachable: false,
         reverses: [],
+        devices: [],
+        selectedSerial: null,
       }),
       desired
     );

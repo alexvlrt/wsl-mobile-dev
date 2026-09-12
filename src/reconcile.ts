@@ -34,7 +34,16 @@ export function planReconciliation(observed: ObservedState, desired: DesiredStat
   // The emulator lives on the Windows side and is reached through adb.exe. usbipd is a
   // USB passthrough mechanism and has nothing to do with it, so the whole branch is
   // skipped rather than reported as broken.
-  if (desired.target === 'device' && observed.isWsl) {
+  //
+  // It is skipped too when a usable physical device is already selected: usbipd is a
+  // means to an end, and the end is reached. A phone can arrive through a Windows adb
+  // server bridge or an attachment made earlier, and complaining that "a cabled phone
+  // cannot be handed over" while that phone sits there answering is pure noise.
+  const physicalDeviceReady = observed.devices.some(
+    (device) => device.serial === observed.selectedSerial && !device.isEmulator
+  );
+
+  if (desired.target === 'device' && observed.isWsl && !physicalDeviceReady) {
     if (!observed.usbipd.available) {
       actions.push({
         kind: 'usbipd-attach',
