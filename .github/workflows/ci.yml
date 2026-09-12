@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npx vitest run --coverage
+      - run: npm run build
+
+# Deliberately no windows-latest + WSL runner. Provisioning WSL2 plus a device or an
+# emulator inside a hosted runner is unreliable (nested virtualisation is not available),
+# and it is unnecessary here: every effect is injected, so the decision layer is fully
+# covered with fakes on Linux. Verification on a real WSL machine stays manual.

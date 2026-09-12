@@ -1,0 +1,32 @@
+{
+  "name": "wsl-mobile-dev",
+  "version": "0.1.0",
+  "description": "Reconcile the WSL2 state that Expo and React Native dev builds need on Android: usbipd, adb server, reverse tunnels, Metro hostname.",
+  "keywords": ["wsl", "wsl2", "expo", "react-native", "android", "adb", "usbipd", "metro", "windows", "dev-client", "emulator"],
+  "license": "MIT",
+  "author": "alexvlrt",
+  "repository": { "type": "git", "url": "git+https://github.com/alexvlrt/wsl-mobile-dev.git" },
+  "homepage": "https://github.com/alexvlrt/wsl-mobile-dev#readme",
+  "bugs": { "url": "https://github.com/alexvlrt/wsl-mobile-dev/issues" },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": { "wsl-mobile-dev": "./dist/cli.js" },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "check": "npm run typecheck && npm run test",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
