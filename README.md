@@ -2,7 +2,7 @@
 
 # 📱 wsl-mobile-dev
 
-### One command to get your Android phone talking to Metro from WSL2 — again, and again.
+### One command to get your Android phone talking to Metro from WSL2, again and again.
 
 A small CLI that checks and repairs the four things an **Expo** / **React Native** dev build
 needs on **WSL2**: USB passthrough, adb server, reverse tunnels, Metro hostname.
@@ -20,7 +20,7 @@ needs on **WSL2**: USB passthrough, adb server, reverse tunnels, Metro hostname.
 ## ⚡ Quick start
 
 ```bash
-npx wsl-mobile-dev doctor   # tells you what is broken — changes nothing
+npx wsl-mobile-dev doctor   # tells you what is broken, changes nothing
 npx wsl-mobile-dev init     # writes wsl-mobile-dev.config.json
 npx wsl-mobile-dev dev      # repairs what is broken, then starts Metro
 ```
@@ -48,7 +48,7 @@ Using it every day? `npm install --save-dev wsl-mobile-dev`, then call it from y
 ## 🤔 Why
 
 Running an Expo dev build from WSL2 means keeping the phone passed through from Windows, the
-adb server alive, the `adb reverse` tunnels up and Metro's hostname reachable — all at once.
+adb server alive, the `adb reverse` tunnels up and Metro's hostname reachable, all at once.
 They break constantly, and rarely for the same reason twice:
 
 | What you did | What broke |
@@ -123,7 +123,7 @@ Your API URL becomes a constant (`http://localhost:8090/api/v1`) that no script 
 ## 🧪 Tests
 
 Observation, planning and execution are separate layers, and every external command goes
-through one injected seam — so the tool is tested without a phone, without Windows and
+through one injected seam, so the tool is tested without a phone, without Windows and
 without adb, including the idempotence property the whole design rests on.
 
 ```bash
@@ -133,7 +133,7 @@ npm run coverage   # 99% lines, 100% functions
 
 ## 🤝 Contributing
 
-Issues and PRs welcome — especially reports from other phones and other Windows builds.
+Issues and PRs welcome, especially reports from other phones and other Windows builds.
 Run `npm install && npm run check` (typecheck + tests) before opening one.
 
 ## 📄 License
