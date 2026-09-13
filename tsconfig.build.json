@@ -1,5 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": { "rootDir": "src", "outDir": "dist" },
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    // The published tarball ships `dist` without `src`, so a map that merely points at
+    // ../src/*.ts resolves to nothing on a user's machine. Embedding the sources keeps
+    // stack traces readable from an installed copy.
+    "inlineSources": true
+  },
   "include": ["src"]
 }
