@@ -9,7 +9,7 @@ needs on **WSL2**: USB passthrough, adb server, reverse tunnels, Metro hostname.
 
 [![npm](https://img.shields.io/npm/v/wsl-mobile-dev?color=%23cb3837&logo=npm)](https://www.npmjs.com/package/wsl-mobile-dev)
 [![CI](https://img.shields.io/github/actions/workflow/status/alexvlrt/wsl-mobile-dev/ci.yml?branch=main&logo=github&label=CI)](https://github.com/alexvlrt/wsl-mobile-dev/actions)
-[![coverage](https://img.shields.io/badge/coverage-99%25-brightgreen)](#tests)
+[![coverage](https://img.shields.io/badge/coverage-99%25-brightgreen)](#-tests)
 [![node](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![types](https://img.shields.io/badge/types-TypeScript-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -18,7 +18,7 @@ needs on **WSL2**: USB passthrough, adb server, reverse tunnels, Metro hostname.
 
 ---
 
-## Quick start
+## ⚡ Quick start
 
 ```bash
 npx wsl-mobile-dev doctor   # tells you what is broken — changes nothing
@@ -44,7 +44,7 @@ in a script. `up` performs the fixes. `dev` does `up` and then starts Metro.
 
 ---
 
-## The problem it solves
+## 🤔 The problem it solves
 
 To run an Expo dev build on a phone from WSL2, four things must be true **at the same time**:
 
@@ -67,7 +67,7 @@ A blog post fixes this once. This tool fixes it every time: it is **idempotent**
 run it as often as you like — it looks at what is actually true and repairs only what is
 actually broken.
 
-## Install
+## 📦 Install
 
 ```bash
 npx wsl-mobile-dev doctor          # no install at all
@@ -85,7 +85,7 @@ Then, typically, in `package.json`:
 [usbipd-win](https://github.com/dorssel/usbipd-win) on the Windows side
 (`winget install usbipd`). `doctor` runs anywhere and names whatever is missing.
 
-## Commands
+## 🚀 Commands
 
 | Command | What it does | Changes your machine? |
 | :--- | :--- | :---: |
@@ -99,7 +99,7 @@ Then, typically, in `package.json`:
 **Options:** `--variant <name>` · `--target device|emulator` · `--serial <serial>` ·
 `--dry-run` (print what `up` would do) · `--help` · `--version`
 
-## Configuration
+## ⚙️ Configuration
 
 `wsl-mobile-dev.config.json`, at the root of your project. `init` generates it for you.
 
@@ -131,7 +131,7 @@ Then, typically, in `package.json`:
 > of a reverse, and the runtime error it gives you instead is useless. So a backend running
 > on host `:80` is reached through device port `8090`.
 
-### Why reverse tunnels
+### 🔁 Why reverse tunnels
 
 If your backend runs on the same machine as Metro, the phone can reach it locally — no public
 tunnel, no ngrok:
@@ -143,7 +143,7 @@ phone:8090  ->  adb reverse  ->  host:80  ->  your local backend
 Your API URL becomes a constant (`http://localhost:8090/api/v1`) that no script ever rewrites:
 no random subdomain, no waiting for a tunnel, no stale URL baked into a bundle.
 
-### Why `dev` exists next to `up`
+### ⚠️ Why `dev` exists next to `up`
 
 `up` will never set your Metro hostname, on purpose. `REACT_NATIVE_PACKAGER_HOSTNAME` is an
 environment variable, so it only exists inside the process that sets it — a standalone `up`
@@ -153,7 +153,7 @@ So: `up` repairs what survives its own exit (attachments, servers, tunnels). `de
 that guarantees the hostname, because it is Metro's parent process. `doctor` reports the risk
 and points at the fix. If you prefer your own Metro command, export the variable yourself.
 
-## Does one of these sound like your day?
+## 🔎 Does one of these sound like your day?
 
 - `expo wsl2 adb device not found`
 - `react native metro 172.18.0.1 hermes inspector`
@@ -164,7 +164,7 @@ and points at the fix. If you prefer your own Metro command, export the variable
 
 Then `doctor` is the first thing to run.
 
-## Tests
+## 🧪 Tests
 
 Observation, planning and execution are three separate layers, and every external command
 goes through one injected seam — so the whole tool is tested without a phone, without Windows
@@ -181,7 +181,7 @@ Including the property the design rests on:
 > be empty. A third pass too. A simulated replug puts it back to broken, and the next `up`
 > silently repairs it.
 
-## Contributing
+## 🤝 Contributing
 
 Issues and PRs welcome. This is maintained best-effort by one person who uses it daily on one
 Xiaomi and one AVD, so **reports from other phones and other Windows builds are the most
@@ -192,7 +192,7 @@ npm install
 npm run check     # typecheck + tests
 ```
 
-## License
+## 📄 License
 
 [MIT](LICENSE)
 
